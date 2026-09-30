@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
   Bell, ChevronRight, Facebook, Instagram, Lightbulb, Mail,
@@ -67,15 +68,15 @@ export default function Dashboard() {
         </div>
 
         <nav>
-          <button className="active"><span>01</span>Home</button>
-          <button><span>02</span>Analytics</button>
-          <button><span>03</span>Trends</button>
-          <button><span>04</span>Ideas</button>
+          <Link className="active" href="/dashboard"><span>01</span>Home</Link>
+          <Link href="/analytics"><span>02</span>Analytics</Link>
+          <Link href="/trends"><span>03</span>Trends</Link>
+          <Link href="/ideas"><span>04</span>Ideas</Link>
         </nav>
 
         <div className="sidebar-bottom">
-          <button><Bell size={16} /><span>Alerts</span></button>
-          <button><Settings size={16} /><span>Settings</span></button>
+          <Link href="/alerts"><Bell size={16} /><span>Alerts</span></Link>
+          <Link href="/settings"><Settings size={16} /><span>Settings</span></Link>
           <div className="status"><i />{live?.connected?.length ? `${live.connected.length} platform${live.connected.length === 1 ? "" : "s"} connected` : "Waiting for channels"}</div>
         </div>
       </aside>
