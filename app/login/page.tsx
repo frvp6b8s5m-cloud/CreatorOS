@@ -1,0 +1,6 @@
+"use client";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
+
+export default function Login(){const [email,setEmail]=useState("");return <main className="auth"><Link href="/" className="back"><ArrowLeft size={15}/> Back to CreatorOS</Link><div className="auth-card"><span className="brandmark"><Sparkles size={17}/></span><div className="section-label">WELCOME BACK</div><h1>Return to your<br/><em>intelligence center.</em></h1><p>Sign in to access your channels, trends, opportunities, and reports.</p><form action="/api/auth/login" method="post"><label>Email<input name="email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label><label>Password<input name="password" type="password" required placeholder="••••••••"/></label><button className="primary" type="submit">Sign in <ArrowRight size={15}/></button></form><div className="auth-divider"><span>New to CreatorOS?</span></div><Link href="/signup" className="secondary">Create your account</Link></div></main>}
