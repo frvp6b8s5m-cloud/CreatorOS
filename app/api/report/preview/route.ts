@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server"; import {generateInsights} from "@/lib/ai"; export async function GET(){return NextResponse.json({period:"last_7_days",insights:generateInsights({platforms:["YouTube","TikTok","Instagram","Facebook"],trends:["AI video workflows","Creator tools"],topContent:["AI workflow breakdown"]})});}
