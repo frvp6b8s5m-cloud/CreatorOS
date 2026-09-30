@@ -1,0 +1,13 @@
+alter table public.channels add column if not exists access_token_encrypted text;
+alter table public.channels add column if not exists refresh_token_encrypted text;
+alter table public.channels add column if not exists scopes text[];
+alter table public.channels add column if not exists last_synced_at timestamptz;
+alter table public.channels add column if not exists follower_count bigint default 0;
+alter table public.channels add column if not exists platform_username text;
+alter table public.channels drop constraint if exists channels_platform_check;
+alter table public.channels add constraint channels_platform_check check (platform in ('youtube','tiktok','instagram','facebook'));
+create table if not exists public.channel_metrics(id uuid primary key default gen_random_uuid(),channel_id uuid not null references public.channels(id) on delete cascade,captured_at timestamptz not null default now(),followers bigint default 0,views bigint default 0,likes bigint default 0,comments bigint default 0,shares bigint default 0,posts bigint default 0,engagement_rate numeric(8,4) default 0);
+create table if not exists public.content_items(id uuid primary key default gen_random_uuid(),channel_id uuid not null references public.channels(id) on delete cascade,external_id text not null,title text,description text,content_type text,published_at timestamptz,views bigint default 0,likes bigint default 0,comments bigint default 0,shares bigint default 0,duration_seconds integer,url text,metadata jsonb default '{}'::jsonb,created_at timestamptz default now(),unique(channel_id,external_id));
+alter table public.channel_metrics enable row level security; alter table public.content_items enable row level security;
+create policy "metrics own rows" on public.channel_metrics for all to authenticated using (exists(select 1 from public.channels c where c.id=channel_id and c.user_id=(select auth.uid()))) with check (exists(select 1 from public.channels c where c.id=channel_id and c.user_id=(select auth.uid())));
+create policy "content own rows" on public.content_items for all to authenticated using (exists(select 1 from public.channels c where c.id=channel_id and c.user_id=(select auth.uid()))) with check (exists(select 1 from public.channels c where c.id=channel_id and c.user_id=(select auth.uid())));
