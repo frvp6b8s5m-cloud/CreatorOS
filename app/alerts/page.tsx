@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { ArrowLeft, Bell } from "lucide-react";
+export default function Alerts(){return <main className="simple-page"><Link href="/dashboard" className="back"><ArrowLeft size={15}/> Home</Link><div className="simple-card"><Bell size={24}/><span className="label">ALERTS</span><h1>Only the signals<br/><em>worth seeing.</em></h1><p>Alerts will surface meaningful changes in your connected channels instead of flooding you with notifications.</p><Link className="primary" href="/dashboard">Back to command center</Link></div></main>}
