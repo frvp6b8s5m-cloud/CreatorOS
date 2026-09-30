@@ -1,0 +1,3 @@
+create table if not exists public.weekly_reports(id uuid primary key default gen_random_uuid(),workspace_id uuid not null references public.workspaces(id) on delete cascade,period_start date not null,period_end date not null,status text not null default 'generated',recipient_email text,subject text,html text,created_at timestamptz not null default now(),sent_at timestamptz);
+alter table public.weekly_reports enable row level security;
+create policy "reports owner" on public.weekly_reports for all using(workspace_id in(select id from public.workspaces where owner_id=auth.uid())) with check(workspace_id in(select id from public.workspaces where owner_id=auth.uid()));
