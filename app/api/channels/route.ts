@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 
 const ALLOWED = new Set(["youtube","tiktok","instagram","facebook"]);
 
@@ -15,7 +14,7 @@ export async function GET() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const admin = createAdminClient();
+  const admin = supabase;
   const { data: workspace } = await admin.from("workspaces").select("id").eq("owner_id", user.id).limit(1).maybeSingle();
   if (!workspace) return NextResponse.json({ channels: [] });
   const { data, error } = await admin.from("platform_connections").select("id,platform,display_name,username,external_account_id,status,created_at").eq("workspace_id", workspace.id).order("created_at", { ascending: true });
@@ -35,7 +34,7 @@ export async function POST(request: Request) {
   let url: string;
   try { url = normalizeUrl(String(body.url || "")); } catch { return NextResponse.json({ error: "Enter a valid channel homepage URL." }, { status: 400 }); }
 
-  const admin = createAdminClient();
+  const admin = supabase;
   let { data: workspace } = await admin.from("workspaces").select("id").eq("owner_id", user.id).limit(1).maybeSingle();
   if (!workspace) {
     const created = await admin.from("workspaces").insert({ owner_id: user.id, name: "Creator Command" }).select("id").single();
@@ -56,7 +55,7 @@ export async function DELETE(request: Request) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const id = new URL(request.url).searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing channel id." }, { status: 400 });
-  const admin = createAdminClient();
+  const admin = supabase;
   const { data: workspace } = await admin.from("workspaces").select("id").eq("owner_id", user.id).limit(1).maybeSingle();
   if (!workspace) return NextResponse.json({ error: "Not found." }, { status: 404 });
   const { error } = await admin.from("platform_connections").delete().eq("id", id).eq("workspace_id", workspace.id);
