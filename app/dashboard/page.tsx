@@ -2,154 +2,186 @@
 
 import { useState } from "react";
 import {
-  ArrowUpRight, Bell, Facebook, Instagram, Lightbulb, Mail, Play,
-  Radar, Settings, Sparkles, TrendingUp, Users, Video, Youtube
+  Bell, ChevronRight, Facebook, Instagram, Lightbulb, Mail,
+  Radar, Settings, Sparkles, TrendingUp, Youtube
 } from "lucide-react";
 
 const platforms = [
-  { name: "YouTube", icon: Youtube, stat: "1.2M" },
-  { name: "TikTok", icon: Sparkles, stat: "842K" },
-  { name: "Instagram", icon: Instagram, stat: "318K" },
-  { name: "Facebook", icon: Facebook, stat: "94K" },
+  { name: "YouTube", icon: Youtube, value: "1.2M" },
+  { name: "TikTok", icon: Sparkles, value: "842K" },
+  { name: "Instagram", icon: Instagram, value: "318K" },
+  { name: "Facebook", icon: Facebook, value: "94K" },
 ];
 
-const signals = [
-  { title: "AI storytelling", detail: "Momentum is accelerating across your audience.", growth: "+284%" },
-  { title: "Longer openings", detail: "Your audience is staying longer than usual.", growth: "+31%" },
-  { title: "Short-form docs", detail: "A format is spreading across multiple platforms.", growth: "+76%" },
+const trendSignals = [
+  ["AI VIDEO", "+284%", "Rising fast"],
+  ["CREATOR TOOLS", "+117%", "Strong momentum"],
+  ["SHORT-FORM DOCS", "+76%", "Early signal"],
 ];
 
-const nav = [
-  ["Home", Sparkles],
-  ["Analytics", TrendingUp],
-  ["Trends", Radar],
-  ["Ideas", Lightbulb],
-] as const;
+const nextMoves = [
+  ["01", "AI storytelling is accelerating", "Build around the format while momentum is rising.", "+284%"],
+  ["02", "Longer openings are working", "Your audience is holding attention beyond your baseline.", "+31%"],
+  ["03", "TikTok is leading your Reels", "Three formats are appearing there before Instagram.", "3 gaps"],
+];
 
 export default function Dashboard() {
   const [syncing, setSyncing] = useState(false);
-  const [message, setMessage] = useState("");
+  const [syncMsg, setSyncMsg] = useState("");
 
   async function sync() {
     setSyncing(true);
-    setMessage("");
+    setSyncMsg("");
     try {
       const response = await fetch("/api/sync", { method: "POST" });
-      setMessage(response.ok ? "Updated just now" : "Connect a platform to sync");
+      setSyncMsg(response.ok ? "Updated just now" : "Connect a platform first");
     } catch {
-      setMessage("Sync unavailable");
+      setSyncMsg("Could not update right now");
     } finally {
       setSyncing(false);
     }
   }
 
   return (
-    <main className="command">
-      <aside className="command-sidebar">
+    <main className="app">
+      <aside className="sidebar">
         <div className="brand">
-          <span className="brandmark"><Sparkles size={16} /></span>
-          <span className="brand-word">CreatorOS</span>
+          <div className="brandmark"><Sparkles size={16} /></div>
+          <div><b>CreatorOS</b><span>INTELLIGENCE</span></div>
         </div>
 
-        <div className="side-nav">
-          {nav.map(([label, Icon], index) => (
-            <button className={index === 0 ? "active" : ""} key={label}>
-              <Icon size={16} /><span>{label}</span>
-            </button>
-          ))}
+        <div className="workspace">
+          <span>WORKSPACE</span>
+          <strong>Creator Command</strong>
         </div>
 
-        <div className="side-bottom">
+        <nav>
+          <button className="active"><span>01</span>Home</button>
+          <button><span>02</span>Analytics</button>
+          <button><span>03</span>Trends</button>
+          <button><span>04</span>Ideas</button>
+        </nav>
+
+        <div className="sidebar-bottom">
           <button><Bell size={16} /><span>Alerts</span></button>
           <button><Settings size={16} /><span>Settings</span></button>
-          <small><i />4 platforms connected</small>
+          <div className="status"><i />All systems connected</div>
         </div>
       </aside>
 
-      <section className="command-main">
-        <header className="command-top">
+      <section className="main cinematic-main">
+        <header className="dashboard-header cinematic-header">
           <div>
-            <span className="eyebrow">CREATOROS · TUESDAY, SEPTEMBER 30</span>
-            <h1>Good morning, <em>Creator.</em></h1>
-            <p>Everything worth knowing, in one place.</p>
+            <div className="eyebrow">TUESDAY · SEPTEMBER 30, 2026</div>
+            <h1>Good morning, <span>Creator.</span></h1>
+            <p>Your audience is moving. <b>Here&apos;s what matters.</b></p>
           </div>
-          <div className="top-actions">
-            {message && <span className="sync-note">{message}</span>}
+          <div className="actions">
             <button className="sync-button" onClick={sync}>
-              <i />{syncing ? "Updating" : "Update"}
+              <i />{syncing ? "UPDATING…" : "UPDATE DATA"}
             </button>
+            {syncMsg && <span className="sync-msg">{syncMsg}</span>}
             <div className="avatar">BZ</div>
           </div>
         </header>
 
-        <section className="cinematic-hero">
-          <div className="hero-copy">
-            <span className="section-kicker">THE BIG PICTURE</span>
-            <h2>Your content is <em>moving.</em></h2>
-            <p>Across every platform, your audience is showing stronger signals than your usual baseline.</p>
-            <div className="hero-number">
-              <strong>2.91M</strong>
-              <span>total views <b>+42.8%</b></span>
-            </div>
-          </div>
-          <div className="hero-chart" aria-label="30 day view trend">
-            {[28,35,32,48,43,56,52,65,61,76,70,84,92,87,100].map((height, i) => (
-              <i key={i} style={{ height: height + "%" }} />
-            ))}
-          </div>
-          <div className="hero-foot">
-            <span><b>8.7%</b> engagement</span>
-            <span><b>2.45M</b> followers</span>
-            <span><b>92</b> audience fit</span>
-            <span>Last 30 days</span>
-          </div>
-        </section>
-
-        <section className="platform-line">
-          {platforms.map(({ name, icon: Icon, stat }) => (
-            <div key={name}>
-              <Icon size={15} />
-              <span><b>{name}</b><small>{stat} followers</small></span>
+        <section className="platform-dock">
+          <span className="dock-label">YOUR WORLD</span>
+          {platforms.map(({ name, icon: Icon, value }) => (
+            <div className="platform-pill" key={name}>
+              <Icon size={14} />
+              <b>{name}</b>
+              <span>{value}</span>
               <i />
             </div>
           ))}
         </section>
 
-        <section className="signal-layout">
-          <div className="signals-card">
-            <div className="section-heading">
-              <div><span className="section-kicker">WHAT MATTERS NOW</span><h3>Three signals worth your attention.</h3></div>
-              <ArrowUpRight size={18} />
+        <section className="cinematic-hero">
+          <div className="hero-copy">
+            <span className="label">THE BIG PICTURE</span>
+            <h2>Your content is<br /><em>moving up.</em></h2>
+            <div className="hero-number">
+              <strong>2.91M</strong>
+              <span>total views</span>
             </div>
-            {signals.map((signal, index) => (
-              <article className="signal" key={signal.title}>
-                <span className="signal-index">0{index + 1}</span>
-                <div><strong>{signal.title}</strong><p>{signal.detail}</p></div>
-                <b>{signal.growth}</b>
-              </article>
-            ))}
+            <div className="hero-change"><i /> +42.8% <span>over the last 30 days</span></div>
           </div>
 
-          <div className="next-card">
-            <div className="next-glow" />
-            <span className="section-kicker">YOUR NEXT MOVE</span>
-            <Sparkles size={19} />
-            <h3>Make the idea<br /><em>while it&apos;s moving.</em></h3>
-            <p>Turn the strongest signal into a short-form concept built around your audience.</p>
-            <button>Open Idea Lab <ArrowUpRight size={14} /></button>
+          <div className="hero-visual">
+            <div className="chart-grid">
+              {[0, 1, 2, 3].map((n) => <i key={n} />)}
+            </div>
+            <svg viewBox="0 0 800 260" preserveAspectRatio="none" aria-label="30 day view trend">
+              <defs>
+                <linearGradient id="area" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stopColor="#9b86ff" stopOpacity=".34" />
+                  <stop offset="100%" stopColor="#9b86ff" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+              <path d="M0 225 C80 210 85 170 145 184 S230 160 280 174 S350 128 405 145 S475 100 530 118 S620 78 670 91 S735 45 800 54 L800 260 L0 260 Z" fill="url(#area)" />
+              <path d="M0 225 C80 210 85 170 145 184 S230 160 280 174 S350 128 405 145 S475 100 530 118 S620 78 670 91 S735 45 800 54" fill="none" stroke="#aa98ff" strokeWidth="3" />
+              <circle cx="800" cy="54" r="6" fill="#c2b7ff" />
+            </svg>
+            <div className="chart-caption"><span>30 DAYS AGO</span><span>TODAY</span></div>
+          </div>
+
+          <div className="hero-stats">
+            <div><span>ENGAGEMENT</span><b>8.7%</b><small>+1.8%</small></div>
+            <div><span>FOLLOWERS</span><b>2.45M</b><small>+12.4K</small></div>
+            <div><span>AUDIENCE FIT</span><b>92</b><small>Excellent match</small></div>
           </div>
         </section>
 
-        <section className="bottom-layout">
-          <div className="mini-card">
-            <span className="section-kicker">WEEKLY INTELLIGENCE</span>
-            <div><Mail size={17} /><strong>Your weekly brief is ready every Sunday.</strong><button>Preview</button></div>
+        <section className="signal-grid">
+          <div className="signal-panel">
+            <div className="section-head">
+              <div><span className="label">TREND RADAR</span><h3>What&apos;s moving <em>now.</em></h3></div>
+              <Radar size={19} />
+            </div>
+            <div className="radar-stage">
+              <div className="radar-rings"><i /><i /><i /></div>
+              <div className="radar-core"><Radar size={19} /><span>LIVE<br />SIGNALS</span></div>
+              <b className="signal-dot sd1">AI</b>
+              <b className="signal-dot sd2">DOCS</b>
+              <b className="signal-dot sd3">TOOLS</b>
+            </div>
+            <div className="trend-list">
+              {trendSignals.map(([name, growth, state]) => (
+                <div key={name}><span><b>{name}</b><small>{state}</small></span><strong>{growth}</strong></div>
+              ))}
+            </div>
           </div>
-          <div className="mini-card">
-            <span className="section-kicker">RECENT CONTENT</span>
-            <div><Video size={17} /><strong>See what is outperforming your baseline.</strong><button>View content</button></div>
+
+          <div className="signal-panel next-move">
+            <div className="section-head">
+              <div><span className="label">YOUR NEXT MOVE</span><h3>Three signals worth <em>acting on.</em></h3></div>
+              <Lightbulb size={19} />
+            </div>
+            <div className="move-list">
+              {nextMoves.map(([number, title, detail, stat]) => (
+                <div className="move" key={number}>
+                  <span className="move-number">{number}</span>
+                  <div><b>{title}</b><small>{detail}</small></div>
+                  <strong>{stat}</strong>
+                  <ChevronRight size={15} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
+
+        <section className="weekly-card">
+          <div className="weekly-icon"><Mail size={20} /></div>
+          <div>
+            <span className="label">WEEKLY INTELLIGENCE</span>
+            <h3>One brief. <em>Everything that matters.</em></h3>
+            <p>Your cross-platform report arrives every Sunday with performance, trends, opportunities and what to do next.</p>
+          </div>
+          <button>Preview report <ChevronRight size={15} /></button>
+        </section>
+
+        <footer className="dashboard-footer">CREATOROS · YOUR CONTENT, ONE CLEAR SIGNAL.</footer>
       </section>
     </main>
   );
