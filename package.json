@@ -31,6 +31,7 @@
     "eslint-config-next": "latest",
     "vite": "latest",
     "@cloudflare/vite-plugin": "latest",
+    "@vitejs/plugin-rsc": "latest",
     "wrangler": "latest"
   },
   "type": "module"
