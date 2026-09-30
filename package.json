@@ -32,5 +32,6 @@
     "vite": "latest",
     "@cloudflare/vite-plugin": "latest",
     "wrangler": "latest"
-  }
+  },
+  "type": "module"
 }
