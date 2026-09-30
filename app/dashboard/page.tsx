@@ -1,92 +1,156 @@
 "use client";
 
 import { useState } from "react";
-import { Bell, Facebook, Gauge, Instagram, Lightbulb, Mail, Radar, Settings, Sparkles, TrendingUp, Video, Youtube } from "lucide-react";
+import {
+  ArrowUpRight, Bell, Facebook, Instagram, Lightbulb, Mail, Play,
+  Radar, Settings, Sparkles, TrendingUp, Users, Video, Youtube
+} from "lucide-react";
 
 const platforms = [
-  { name: "YouTube", icon: Youtube, followers: "1.2M" },
-  { name: "TikTok", icon: Sparkles, followers: "842K" },
-  { name: "Instagram", icon: Instagram, followers: "318K" },
-  { name: "Facebook", icon: Facebook, followers: "94K" },
+  { name: "YouTube", icon: Youtube, stat: "1.2M" },
+  { name: "TikTok", icon: Sparkles, stat: "842K" },
+  { name: "Instagram", icon: Instagram, stat: "318K" },
+  { name: "Facebook", icon: Facebook, stat: "94K" },
 ];
 
-const trends = [["AI VIDEO", "+284%"], ["CREATOR TOOLS", "+117%"], ["SHORT-FORM DOCS", "+76%"]];
-const opportunities = [
-  ["AI storytelling is accelerating", "+284%", "Create around the format while momentum is rising."],
-  ["Your audience is watching longer", "+31%", "Longer openings are holding attention better than your baseline."],
-  ["TikTok → Reels format gap", "3 gaps", "Three strong formats are appearing on TikTok before your Reels."],
+const signals = [
+  { title: "AI storytelling", detail: "Momentum is accelerating across your audience.", growth: "+284%" },
+  { title: "Longer openings", detail: "Your audience is staying longer than usual.", growth: "+31%" },
+  { title: "Short-form docs", detail: "A format is spreading across multiple platforms.", growth: "+76%" },
 ];
+
+const nav = [
+  ["Home", Sparkles],
+  ["Analytics", TrendingUp],
+  ["Trends", Radar],
+  ["Ideas", Lightbulb],
+] as const;
 
 export default function Dashboard() {
   const [syncing, setSyncing] = useState(false);
-  const [syncMsg, setSyncMsg] = useState("");
+  const [message, setMessage] = useState("");
 
   async function sync() {
     setSyncing(true);
-    setSyncMsg("");
+    setMessage("");
     try {
       const response = await fetch("/api/sync", { method: "POST" });
-      setSyncMsg(response.ok ? "Synced just now" : "Connect your platforms first");
+      setMessage(response.ok ? "Updated just now" : "Connect a platform to sync");
     } catch {
-      setSyncMsg("Sync unavailable right now");
+      setMessage("Sync unavailable");
     } finally {
       setSyncing(false);
     }
   }
 
-  const nav = [["Home", Gauge], ["Analytics", TrendingUp], ["Trends", Radar], ["Ideas", Lightbulb], ["Content", Video]] as const;
-
-  return <main className="app">
-    <aside className="sidebar">
-      <div className="brand"><div className="brandmark"><Sparkles size={17} /></div><div><b>CreatorOS</b><span>INTELLIGENCE</span></div></div>
-      <div className="workspace"><span>WORKSPACE</span><strong>Creator Command</strong></div>
-      <nav>{nav.map(([label, Icon], index) => <button className={index === 0 ? "active" : ""} key={label}><Icon size={17} /><span>{label}</span></button>)}</nav>
-      <div className="sidebar-bottom">
-        <button><Bell size={17} /><span>Alerts</span></button>
-        <button><Settings size={17} /><span>Settings</span></button>
-        <div className="status"><i />4 platforms connected</div>
-      </div>
-    </aside>
-
-    <section className="main">
-      <header className="dashboard-header">
-        <div><div className="eyebrow">TUESDAY · SEPTEMBER 30, 2026</div><h1>Good morning, <span>Creator.</span></h1><p>Your audience is moving. <b>Here&apos;s what matters.</b></p></div>
-        <div className="actions"><button className="live" onClick={sync}><i />{syncing ? "SYNCING…" : "SYNC"}</button>{syncMsg && <span className="sync-msg">{syncMsg}</span>}<div className="avatar">BZ</div></div>
-      </header>
-
-      <div className="source-strip">
-        {platforms.map(({ name, icon: Icon, followers }) => <div className="source" key={name}><Icon size={15} /><span><b>{name}</b><small>{followers} followers</small></span><i /></div>)}
-      </div>
-
-      <section className="hero-grid">
-        <div className="panel performance cinematic-panel">
-          <div className="panel-head"><div><span className="label">THE BIG PICTURE</span><h2>Your content is <strong>moving up.</strong></h2></div><button className="period">30 days⌄</button></div>
-          <div className="hero-metric"><span>TOTAL VIEWS</span><strong>2.91M</strong><b>+42.8%</b></div>
-          <div className="chart cinematic-chart">{[32,42,38,55,49,62,71,66,82,78,91,88,100].map((height,index)=><div className="bar-wrap" key={index}><div className="bar" style={{height: height + "%"}} /></div>)}</div>
-          <div className="metric-line"><span><b>8.7%</b> engagement</span><span><b>2.45M</b> followers</span><span><b>92</b> audience fit</span></div>
+  return (
+    <main className="command">
+      <aside className="command-sidebar">
+        <div className="brand">
+          <span className="brandmark"><Sparkles size={16} /></span>
+          <span className="brand-word">CreatorOS</span>
         </div>
 
-        <div className="panel radar cinematic-panel">
-          <div className="panel-head"><div><span className="label">TREND RADAR</span><h2>What&apos;s moving <strong>now.</strong></h2></div></div>
-          <div className="radar-orb"><div className="orbit o1" /><div className="orbit o2" /><div className="orbit o3" /><div className="orb-center"><Radar size={23} /><span>LIVE SIGNALS</span></div><div className="dot d1" /><div className="dot d2" /><div className="dot d3" /></div>
-          {trends.map(([name,growth])=><div className="trend-row" key={name}><span>{name}</span><b>{growth}</b></div>)}
+        <div className="side-nav">
+          {nav.map(([label, Icon], index) => (
+            <button className={index === 0 ? "active" : ""} key={label}>
+              <Icon size={16} /><span>{label}</span>
+            </button>
+          ))}
         </div>
+
+        <div className="side-bottom">
+          <button><Bell size={16} /><span>Alerts</span></button>
+          <button><Settings size={16} /><span>Settings</span></button>
+          <small><i />4 platforms connected</small>
+        </div>
+      </aside>
+
+      <section className="command-main">
+        <header className="command-top">
+          <div>
+            <span className="eyebrow">CREATOROS · TUESDAY, SEPTEMBER 30</span>
+            <h1>Good morning, <em>Creator.</em></h1>
+            <p>Everything worth knowing, in one place.</p>
+          </div>
+          <div className="top-actions">
+            {message && <span className="sync-note">{message}</span>}
+            <button className="sync-button" onClick={sync}>
+              <i />{syncing ? "Updating" : "Update"}
+            </button>
+            <div className="avatar">BZ</div>
+          </div>
+        </header>
+
+        <section className="cinematic-hero">
+          <div className="hero-copy">
+            <span className="section-kicker">THE BIG PICTURE</span>
+            <h2>Your content is <em>moving.</em></h2>
+            <p>Across every platform, your audience is showing stronger signals than your usual baseline.</p>
+            <div className="hero-number">
+              <strong>2.91M</strong>
+              <span>total views <b>+42.8%</b></span>
+            </div>
+          </div>
+          <div className="hero-chart" aria-label="30 day view trend">
+            {[28,35,32,48,43,56,52,65,61,76,70,84,92,87,100].map((height, i) => (
+              <i key={i} style={{ height: height + "%" }} />
+            ))}
+          </div>
+          <div className="hero-foot">
+            <span><b>8.7%</b> engagement</span>
+            <span><b>2.45M</b> followers</span>
+            <span><b>92</b> audience fit</span>
+            <span>Last 30 days</span>
+          </div>
+        </section>
+
+        <section className="platform-line">
+          {platforms.map(({ name, icon: Icon, stat }) => (
+            <div key={name}>
+              <Icon size={15} />
+              <span><b>{name}</b><small>{stat} followers</small></span>
+              <i />
+            </div>
+          ))}
+        </section>
+
+        <section className="signal-layout">
+          <div className="signals-card">
+            <div className="section-heading">
+              <div><span className="section-kicker">WHAT MATTERS NOW</span><h3>Three signals worth your attention.</h3></div>
+              <ArrowUpRight size={18} />
+            </div>
+            {signals.map((signal, index) => (
+              <article className="signal" key={signal.title}>
+                <span className="signal-index">0{index + 1}</span>
+                <div><strong>{signal.title}</strong><p>{signal.detail}</p></div>
+                <b>{signal.growth}</b>
+              </article>
+            ))}
+          </div>
+
+          <div className="next-card">
+            <div className="next-glow" />
+            <span className="section-kicker">YOUR NEXT MOVE</span>
+            <Sparkles size={19} />
+            <h3>Make the idea<br /><em>while it&apos;s moving.</em></h3>
+            <p>Turn the strongest signal into a short-form concept built around your audience.</p>
+            <button>Open Idea Lab <ArrowUpRight size={14} /></button>
+          </div>
+        </section>
+
+        <section className="bottom-layout">
+          <div className="mini-card">
+            <span className="section-kicker">WEEKLY INTELLIGENCE</span>
+            <div><Mail size={17} /><strong>Your weekly brief is ready every Sunday.</strong><button>Preview</button></div>
+          </div>
+          <div className="mini-card">
+            <span className="section-kicker">RECENT CONTENT</span>
+            <div><Video size={17} /><strong>See what is outperforming your baseline.</strong><button>View content</button></div>
+          </div>
+        </section>
       </section>
-
-      <section className="lower-grid">
-        <div className="panel opportunities cinematic-panel">
-          <div className="panel-head"><div><span className="label">YOUR NEXT MOVE</span><h2>Three signals worth acting on.</h2></div></div>
-          {opportunities.map(([title,stat,detail],index)=><div className="op" key={title}><div className="op-number">0{index + 1}</div><div className="op-copy"><strong>{title}</strong><span>{detail}</span></div><div className="op-stat"><b>{stat}</b></div></div>)}
-        </div>
-        <div className="panel ai cinematic-panel">
-          <span className="label">WEEKLY INTELLIGENCE</span><Mail size={20} /><h2>One brief.<br /><em>Everything that matters.</em></h2>
-          <p>CreatorOS combines your four platforms into one simple weekly report.</p>
-          <div className="report-row"><span><i />Next report</span><b>Sunday · 6:00 PM</b></div>
-          <button className="primary"><Mail size={15} /> Preview report</button>
-        </div>
-      </section>
-
-      <div className="mobile-nav">{nav.map(([label,Icon],index)=><button className={index === 0 ? "active" : ""} key={label}><Icon size={17} /><span>{label}</span></button>)}</div>
-    </section>
-  </main>;
+    </main>
+  );
 }
