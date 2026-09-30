@@ -20,7 +20,8 @@
     "lucide-react": "0.577.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
-    "vinext": "latest"
+    "vinext": "latest",
+    "react-server-dom-webpack": "latest"
   },
   "devDependencies": {
     "typescript": "latest",
