@@ -48,3 +48,5 @@ npm run dev
 
 ## Important
 The UI can run before external platform credentials are configured, but **real platform metrics and OAuth connections require the corresponding developer applications, scopes, redirect URLs and API permissions**. Demo dashboard values are presentation data until a connection has been synced.
+
+BENTLEY.Z (9/30/2026)(8:34AM)
