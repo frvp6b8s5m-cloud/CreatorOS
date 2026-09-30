@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server"; export async function POST(){return NextResponse.json({ok:true,status:"queued",jobs:["account-sync","metric-snapshot","content-analysis","trend-scan","opportunity-detection"]});}
