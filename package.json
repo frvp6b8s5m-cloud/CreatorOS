@@ -8,9 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "dev:vinext": "vinext dev",
-    "build:vinext": "vinext build",
+    "build:vinext": "vite build",
     "start:vinext": "vinext start",
-    "deploy:cloudflare": "vinext-cloudflare deploy"
+    "deploy:cloudflare": "vinext-cloudflare deploy",
+    "deploy": "vinext-cloudflare deploy"
   },
   "dependencies": {
     "next": "16.3.7",
