@@ -1,0 +1,2 @@
+export type Platform='youtube'|'tiktok'|'instagram'|'facebook';
+export const PLATFORM_CONFIG={youtube:{name:'YouTube',metrics:['videos','shorts','views','likes','comments','subscribers','watch_time']},tiktok:{name:'TikTok',metrics:['videos','views','likes','comments','shares','followers']},instagram:{name:'Instagram',metrics:['reels','posts','views','likes','comments','shares','followers']},facebook:{name:'Facebook',metrics:['videos','reels','posts','views','reactions','comments','shares','followers']}} as const;
