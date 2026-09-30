@@ -3,15 +3,15 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  Bell, ChevronRight, Facebook, Instagram, Lightbulb, Mail,
-  Radar, Settings, Sparkles, TrendingUp, Youtube
+  Bell, Camera, ChevronRight, Lightbulb, Mail,
+  Music2, Radar, Settings, Sparkles, Users
 } from "lucide-react";
 
 const platforms = [
-  { name: "YouTube", icon: Youtube, value: "1.2M" },
+  { name: "YouTube", icon: Music2, value: "1.2M" },
   { name: "TikTok", icon: Sparkles, value: "842K" },
-  { name: "Instagram", icon: Instagram, value: "318K" },
-  { name: "Facebook", icon: Facebook, value: "94K" },
+  { name: "Instagram", icon: Camera, value: "318K" },
+  { name: "Facebook", icon: Users, value: "94K" },
 ];
 
 const trendSignals = [
