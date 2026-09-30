@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bell, ChevronRight, Facebook, Instagram, Lightbulb, Mail,
   Radar, Settings, Sparkles, TrendingUp, Youtube
@@ -28,6 +28,16 @@ const nextMoves = [
 export default function Dashboard() {
   const [syncing, setSyncing] = useState(false);
   const [syncMsg, setSyncMsg] = useState("");
+  const [live, setLive] = useState<any>(null);
+
+  async function loadDashboard() {
+    try {
+      const response = await fetch("/api/dashboard", { cache: "no-store" });
+      if (response.ok) setLive(await response.json());
+    } catch {}
+  }
+
+  useEffect(() => { loadDashboard(); }, []);
 
   async function sync() {
     setSyncing(true);
@@ -35,6 +45,7 @@ export default function Dashboard() {
     try {
       const response = await fetch("/api/sync", { method: "POST" });
       setSyncMsg(response.ok ? "Updated just now" : "Connect a platform first");
+      if (response.ok) await loadDashboard();
     } catch {
       setSyncMsg("Could not update right now");
     } finally {
@@ -65,7 +76,7 @@ export default function Dashboard() {
         <div className="sidebar-bottom">
           <button><Bell size={16} /><span>Alerts</span></button>
           <button><Settings size={16} /><span>Settings</span></button>
-          <div className="status"><i />All systems connected</div>
+          <div className="status"><i />{live?.connected?.length ? `${live.connected.length} platform${live.connected.length === 1 ? "" : "s"} connected` : "Waiting for channels"}</div>
         </div>
       </aside>
 
@@ -91,7 +102,7 @@ export default function Dashboard() {
             <div className="platform-pill" key={name}>
               <Icon size={14} />
               <b>{name}</b>
-              <span>{value}</span>
+              <span>{live?.platforms?.find((p: any) => p.platform === name.toLowerCase())?.views ? `${(live.platforms.find((p: any) => p.platform === name.toLowerCase()).views / 1000).toFixed(0)}K` : "—"}</span>
               <i />
             </div>
           ))}
@@ -102,10 +113,10 @@ export default function Dashboard() {
             <span className="label">THE BIG PICTURE</span>
             <h2>Your content is<br /><em>moving up.</em></h2>
             <div className="hero-number">
-              <strong>2.91M</strong>
+              <strong>{live?.hasData ? `${(live.totalViews / 1000000).toFixed(2)}M` : "—"}</strong>
               <span>total views</span>
             </div>
-            <div className="hero-change"><i /> +42.8% <span>over the last 30 days</span></div>
+            <div className="hero-change"><i /> {live?.connected?.length || 0} connected <span>{live?.hasData ? "live data available" : "connect a channel to start"}</span></div>
           </div>
 
           <div className="hero-visual">
@@ -127,9 +138,9 @@ export default function Dashboard() {
           </div>
 
           <div className="hero-stats">
-            <div><span>ENGAGEMENT</span><b>8.7%</b><small>+1.8%</small></div>
-            <div><span>FOLLOWERS</span><b>2.45M</b><small>+12.4K</small></div>
-            <div><span>AUDIENCE FIT</span><b>92</b><small>Excellent match</small></div>
+            <div><span>ENGAGEMENT</span><b>{live?.hasData ? `${live.engagementRate.toFixed(1)}%` : "—"}</b><small>live</small></div>
+            <div><span>FOLLOWERS</span><b>{live?.hasData ? live.followers.toLocaleString() : "—"}</b><small>live</small></div>
+            <div><span>AUDIENCE FIT</span><b>{live?.audienceFit ?? "—"}</b><small>{live?.hasData ? "Connected audience" : "Connect channels"}</small></div>
           </div>
         </section>
 
