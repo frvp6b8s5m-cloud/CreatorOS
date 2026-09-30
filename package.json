@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "dev:vinext": "vinext dev",
+    "build:vinext": "vinext build",
+    "start:vinext": "vinext start",
+    "deploy:cloudflare": "vinext-cloudflare deploy"
   },
   "dependencies": {
     "next": "16.3.7",
@@ -14,7 +18,8 @@
     "react-dom": "19.1.1",
     "lucide-react": "0.577.0",
     "@supabase/ssr": "latest",
-    "@supabase/supabase-js": "latest"
+    "@supabase/supabase-js": "latest",
+    "vinext": "latest"
   },
   "devDependencies": {
     "typescript": "latest",
@@ -22,6 +27,9 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "eslint": "latest",
-    "eslint-config-next": "latest"
+    "eslint-config-next": "latest",
+    "vite": "latest",
+    "@cloudflare/vite-plugin": "latest",
+    "wrangler": "latest"
   }
 }
