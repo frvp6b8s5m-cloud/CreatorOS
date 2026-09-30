@@ -1,0 +1,6 @@
+"use client";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
+
+export default function Signup(){const [email,setEmail]=useState("");return <main className="auth"><Link href="/" className="back"><ArrowLeft size={15}/> Back to CreatorOS</Link><div className="auth-card"><span className="brandmark"><Sparkles size={17}/></span><div className="section-label">CREATE ACCOUNT</div><h1>Build your<br/><em>creator command center.</em></h1><p>Your account keeps your channels, intelligence history, opportunities, and weekly reports together.</p><form action="/api/auth/signup" method="post"><label>Name<input name="name" required placeholder="Your name"/></label><label>Email<input name="email" type="email" required value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com"/></label><label>Password<input name="password" type="password" minLength={8} required placeholder="At least 8 characters"/></label><button className="primary" type="submit">Create account <ArrowRight size={15}/></button></form><div className="auth-divider"><span>Already have an account?</span></div><Link href="/login" className="secondary">Sign in</Link></div></main>}
