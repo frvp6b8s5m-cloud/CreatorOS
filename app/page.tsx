@@ -9,7 +9,7 @@ const features = [
 ];
 
 export default function Landing() {
-  return <main className="landing">
+  return <main className="landing" data-build="creatoros-live">
     <div className="ambient ambient-a"/><div className="ambient ambient-b"/>
     <header className="landing-nav"><Link href="/" className="brand"><span className="brandmark"><Sparkles size={16}/></span><b>CreatorOS</b></Link><div className="nav-actions"><Link href="/login">Log in</Link><Link href="/signup" className="nav-cta">Create account <ArrowRight size={14}/></Link></div></header>
     <section className="landing-hero">
