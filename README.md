@@ -1,16 +1,9 @@
 # CreatorOS
 
-CreatorOS is a creator-intelligence command center.
+CreatorOS is a multi-platform creator intelligence command center.
 
-## Product flow
-Create account → Connect channels → Initial intelligence scan → Dashboard → Weekly email report.
+**Platforms:** YouTube · TikTok · Instagram · Facebook
 
-## Stack
-Next.js + TypeScript, Supabase Auth + Postgres + RLS, weekly cron, and a cinematic responsive dashboard.
+**Flow:** Create account → connect channels → ingest content and metrics → normalize cross-platform data → detect trends → generate opportunities → measure outcomes → receive a weekly intelligence email.
 
-## Setup
-Copy `.env.example` to `.env.local`. Configure Supabase and apply `supabase/migrations/001_creatoros.sql`. Configure the weekly report email provider and cron secret.
-
-## Run
-npm install
-npm run dev
+Each platform gets an adapter so native metrics are preserved while common metrics can be compared.
