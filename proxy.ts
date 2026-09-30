@@ -18,7 +18,7 @@ export async function proxy(request: NextRequest) {
     },
   );
 
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data: claims } = await supabase.auth.getClaims();
   const pathname = request.nextUrl.pathname;
   const protectedRoute = ["/dashboard","/onboarding","/analytics","/trends","/ideas","/alerts","/settings"].some((route) => pathname.startsWith(route));
   if (protectedRoute && !claims) {
